@@ -6,6 +6,8 @@ require("dotenv").config({ path: "./config.env" });
 
 const port = process.env.PORT || 5000;
 const postRouter = require("./routes/postRoutes");
+const authRouter = require("./routes/authRoutes");
+const userRouter = require("./routes/userRoutes");
 
 app.use(bodyParser.json());
 
@@ -20,6 +22,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/post", postRouter);
+app.use("/auth", authRouter);
+app.use("/user", userRouter);
 
 mongoose
   .connect(process.env.ATLAS_URI)
