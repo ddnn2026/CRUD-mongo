@@ -14,3 +14,15 @@ exports.compareHash = (text, hash) => {
     return false;
   }
 };
+
+exports.createToken = (obj, secret) => {
+  const token = jwt.sign(
+    {
+      email: obj.email,
+      userId: obj.userId,
+    },
+    secret,
+    { expiresIn: "1h" }
+  );
+  return token;
+};
