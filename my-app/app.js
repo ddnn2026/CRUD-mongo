@@ -2,9 +2,9 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const { mongoose } = require("mongoose");
-require("dotenv").config({ path: "./config.env" });
+require("dotenv").config({ path: "../.env" });
 
-const port = process.env.PORT || 5000;
+const port = process.env.NODE_DOCKER_PORT || 5000;
 const postRouter = require("./routes/postRoutes");
 const authRouter = require("./routes/authRoutes");
 const userRouter = require("./routes/userRoutes");
@@ -25,10 +25,13 @@ app.use("/post", postRouter);
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 
+const aa = process.env.MONGO_USER;
 mongoose
-  .connect(process.env.ATLAS_URI)
+  .connect(
+    "mongodb://root:password@localhost:20718/?authMechanism=DEFAULT"
+  )
   .then((result) => {
-    app.listen(port);
+    app.listen(process.env.NODE_DOCKER_PORT || 5000);
     console.log(`Server running on port: ${port}`);
   })
   .catch((err) => console.log(err));
