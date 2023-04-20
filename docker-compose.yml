@@ -5,10 +5,10 @@ services:
     container_name: mongo1
     restart: unless-stopped
     ports:
-      - 27017:27017
+      - $MONGO_LOCAL_PORT:$MONGO_DOCKER_PORT
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: password
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USER
+      - MONGO_INITDB_ROOT_PASSWORD==$MONGO_PASS
     volumes:
       - ./databases-data:/data/db
   mongo-express:
@@ -18,10 +18,10 @@ services:
     links:
       - mongo
     ports:
-      - 8081:8081
+      - $MONGO_EXPRESS_PORT:$MONGO_EXPRESS_PORT
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: password
-      ME_CONFIG_MONGODB_URL: mongodb://root:password@mongo:27017/?authSource=admin
-      ME_CONFIG_BASICAUTH_USERNAME: mexpress
-      ME_CONFIG_BASICAUTH_PASSWORD: mexpress
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=$MONGO_USER
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=$MONGO_PASS
+      - ME_CONFIG_MONGODB_URL=mongodb://$MONGO_USER:$MONGO_PASS@mongo:$MONGO_DOCKER_PORT/?authSource=admin
+      - ME_CONFIG_BASICAUTH_USERNAME=$MONGO_EXPRESS_USER
+      - ME_CONFIG_BASICAUTH_PASSWORD=$MONGO_EXPRESS_USER
